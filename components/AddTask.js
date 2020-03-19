@@ -14,16 +14,16 @@ class AddTask extends Component {
         }
     }
     onSubmit=()=>{
-        
          firebase.database().ref(`Task/`).push(
                {
                 TaskHeading: this.state.TaskHeading,
                 TaskDescription: this.state.TaskDescription,
                 GivenBy: this.state.GivenBy,
                 Location: this.state.Location,
+                id:''
             }
            ).then(()=>{
-               console.log('added')
+               console.log('added');
            }).catch((error)=>{
                console.log(error)
            })  

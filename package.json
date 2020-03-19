@@ -10,14 +10,16 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "react": "16.9.0",
-    "react-native": "0.61.5",
     "@react-native-community/masked-view": "^0.1.7",
     "firebase": "^7.10.0",
+    "react": "16.9.0",
+    "react-native": "0.61.5",
     "react-native-dimension": "^1.0.6",
     "react-native-event-listeners": "^1.0.7",
     "react-native-gesture-handler": "^1.6.0",
+    "react-native-modalbox": "^1.1.0",
     "react-native-paper": "^3.6.0",
+    "react-native-popup-dialog": "^0.18.3",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-safe-area-view": "^1.0.0",
     "react-native-screens": "^2.3.0",
