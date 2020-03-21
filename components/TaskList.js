@@ -3,13 +3,11 @@ import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import { TextInput, Button, DataTable, Card, Paragraph } from 'react-native-paper';
 import { height, width } from 'react-native-dimension';
 import firebase from 'firebase';
-import Dialog, { DialogContent } from 'react-native-popup-dialog';
 class TaskList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       TaskList: [],
-      visible: false,
       GivenBy:'',
       TaskHeading:'',
       TaskDescription: '',
@@ -31,13 +29,13 @@ class TaskList extends Component {
     firebase.database().ref(`Task/${id}`).remove();
   }
   editTask = (id) => {
-    firebase.database().ref(`Task/${id}`).update({
-                TaskHeading: this.state.TaskHeading,
-                TaskDescription: this.state.TaskDescription,
-                GivenBy: this.state.GivenBy,
-                Location: this.state.Location,
-    });
-
+    // firebase.database().ref(`Task/${id}`).update({
+    //             TaskHeading: this.state.TaskHeading,
+    //             TaskDescription: this.state.TaskDescription,
+    //             GivenBy: this.state.GivenBy,
+    //             Location: this.state.Location,
+    // });
+    this.props.navigation.navigate('EditTask', {id: id})
   }
   static navigationOptions = { header: null };
   render() {
@@ -60,7 +58,7 @@ class TaskList extends Component {
                     <Text style={{ color: '#fff' }}> Delete</Text>
                   </Button>
                   </View>
-                  <View style={{ flex: 1, alignItems: 'center' }}><Button style={styles.Edit} onPress={() => this.setState({ visible: true })}>
+                  <View style={{ flex: 1, alignItems: 'center' }}><Button style={styles.Edit} onPress={() => {this.editTask(arg.id)}}>
                     <Text style={{ color: '#fff' }}> Edit</Text>
                   </Button>
                   </View>
@@ -70,46 +68,6 @@ class TaskList extends Component {
                   </View>
                 </View>
               </Card>
-              <Dialog
-                  visible={this.state.visible}
-                  onTouchOutside={() => {
-                    this.setState({ visible: false });
-                  }}
-                  style={{height:height(40), width:width(80), padding:20}}
-                >
-                  <DialogContent>
-                  <View style={{width:width(80), borderColor:'#000', borderWidth:1 , padding :10, alignItems:'center', }}>
-                  <TextInput
-                    
-                    label={'Old entry: '+ arg.TaskHeading}
-                    style={styles.input}
-                    onChangeText={TaskHeading => this.setState({ TaskHeading })}
-                />
-                <TextInput
-                    
-                    label={'Old entry: '+arg.TaskDescription}
-                    style={styles.input}
-                    onChangeText={TaskDescription => this.setState({ TaskDescription })}
-                />
-                <TextInput
-                    
-                    label={'Old entry: '+arg.GivenBy}
-                    style={styles.input}
-                    onChangeText={GivenBy => this.setState({ GivenBy })}
-                />
-                <TextInput
-
-                    label={'Old entry: '+arg.Location}
-                    style={styles.input}
-                    onChangeText={Location => this.setState({ Location })}
-                />
-                <Button style={styles.Edit} onPress={() => {
-                this.editTask(arg.id)}}>
-                    <Text style={{ color: '#fff' }}> Save</Text>
-                  </Button>
-                  </View>
-                  </DialogContent>
-                </Dialog>
                 </View>
             )
           })

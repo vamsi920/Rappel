@@ -3,36 +3,33 @@ import { Text, View, StyleSheet } from 'react-native'
 import { TextInput, Button } from 'react-native-paper';
 import { height, width } from 'react-native-dimension';
 import firebase from 'firebase';
-class AddTask extends Component {
+export class EditTask extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            TaskHeading: '',
+        this.state={
+            TaskHeading:'',
             TaskDescription: '',
             GivenBy: '',
-            Location: ''
+            Location: '',
         }
     }
-    onSubmit=()=>{
-         firebase.database().ref(`Task/`).push(
-               {
+    componentWillMount() {
+        console.log(this.props.navigation.state.params.id);
+    }
+    onSubmit=async (id)=>{
+       await firebase.database().ref(`Task/${id}`).update({
                 TaskHeading: this.state.TaskHeading,
                 TaskDescription: this.state.TaskDescription,
                 GivenBy: this.state.GivenBy,
                 Location: this.state.Location,
-                id:''
-            }
-           ).then(()=>{
-               console.log('added');
-           }).catch((error)=>{
-               console.log(error)
-           })  
+    });
+    this.props.navigation.goBack();
     }
     static navigationOptions = { header: null };
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.heading}> Rappel </Text>
+                <Text style={styles.heading}> Edit task  </Text>
                 <TextInput
                     label='Task Heading'
                     value={this.state.TaskHeading}
@@ -57,8 +54,8 @@ class AddTask extends Component {
                     style={styles.input}
                     onChangeText={Location => this.setState({ Location })}
                 />
-                <Button mode="contained" style={styles.addTask} onPress={() => this.onSubmit()}>
-                    Add Task
+                <Button mode="contained" style={styles.addTask} onPress={() => this.onSubmit(this.props.navigation.state.params.id)}>
+                    Edit Task
                  </Button>
             </View>
         )
@@ -95,4 +92,4 @@ const styles = StyleSheet.create({
         color:'#000'
     }
 });
-export default AddTask
+export default EditTask

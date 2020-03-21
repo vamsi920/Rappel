@@ -5,7 +5,8 @@ import {  createAppContainer } from "react-navigation";
 import {createStackNavigator} from 'react-navigation-stack';
 import TaskList from './components/TaskList.js';
 import AddTask from './components/AddTask.js';
-
+import Home from './components/Home.js';
+import EditTask from './components/EditTask.js';
 export class App extends Component {
     componentWillMount(){
         var firebaseConfig = {
@@ -34,10 +35,12 @@ export class App extends Component {
 const RootStack = createStackNavigator(
     {
       TaskList:TaskList,
-      AddTask:AddTask
+      AddTask:AddTask,
+      Home:Home,
+      EditTask:EditTask,
     },
     {
-      initialRouteName: "AddTask"
+      initialRouteName: "Home"
     }
   );
   const AppContainer = createAppContainer(RootStack);
