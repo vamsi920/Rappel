@@ -7,6 +7,7 @@ import TaskList from './components/TaskList.js';
 import AddTask from './components/AddTask.js';
 import Home from './components/Home.js';
 import EditTask from './components/EditTask.js';
+//import MapCheck from './components/MapCheck.js';
 export class App extends Component {
     componentWillMount(){
         var firebaseConfig = {

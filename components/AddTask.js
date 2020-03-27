@@ -3,6 +3,7 @@ import { Text, View, StyleSheet } from 'react-native'
 import { TextInput, Button } from 'react-native-paper';
 import { height, width } from 'react-native-dimension';
 import firebase from 'firebase';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 class AddTask extends Component {
     constructor(props) {
         super(props);

@@ -1,7 +1,31 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { height, width } from 'react-native-dimension';
+import MapView, { Marker,Circle } from 'react-native-maps';
+import Geolocation from '@react-native-community/geolocation';
 export class Home extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            latitude:0,
+            longitude:0
+        };
+   }
+   componentDidMount(){
+    if(this.state.latitude > 22.32260000 && this.state.latitude<= 22.32270000){
+        alert('vamsi you have success ahead now you can go to sleep');
+    }
+    var options = {
+      enableHighAccuracy: true,
+      distanceFilter: 1,
+    };
+        Geolocation.watchPosition((info => {
+            console.log(info.coords.latitude + " " + info.coords.longitude);
+            this.setState({latitude:info.coords.latitude, longitude:info.coords.longitude})}), 
+            ((error)=>{
+              console.log(error);
+            }), options);
+    }
     static navigationOptions = { header: null };
     render() {
         return (
@@ -13,10 +37,10 @@ export class Home extends Component {
                     </View>
                     <View style={styles.locationBoxCoord}>
                         <View style={styles.locationBoxCoordLeft}>
-                            <Text>Lat: </Text>
+                            <Text>Lat: {this.state.latitude}</Text>
                         </View>
                         <View style={styles.locationBoxCoordRight}>
-                            <Text>Long: </Text>
+                            <Text>Long: {this.state.longitude}</Text>
                         </View>
                     </View>
                 </View>
