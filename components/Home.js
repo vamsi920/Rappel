@@ -8,28 +8,69 @@ export class Home extends Component {
         super(props);
         this.state = {
             latitude:0,
-            longitude:0
+            longitude:0,
+            whichRoom:''
         };
    }
    componentDidMount(){
-    if(this.state.latitude > 22.32260000 && this.state.latitude<= 22.32270000){
-        alert('vamsi you have success ahead now you can go to sleep');
-    }
+    const rooms =[
+    {   name:'Vamsi',
+        latMin:22.32250,
+        latMax:22.32270,
+        longMin:87.30720,
+        longMax:87.30730,    
+    },
+    {   name:'Akella',
+        latMin:22.32272,
+        latMax:22.32279,
+        longMin:87.30743,
+        longMax:87.30750,    
+    },
+    {   name:'Pritam',
+        latMin:22.32242,
+        latMax:22.32270,
+        longMin:87.30734,
+        longMax:87.30750,    
+    },
+    {   name:'Aravind',
+        latMin:22.32225,
+        latMax:22.32240,
+        longMin:87.30720,
+        longMax:87.30740,    
+    },
+    ]
     var options = {
       enableHighAccuracy: true,
       distanceFilter: 1,
     };
+    roomChecker=(latitude, longitude)=>{
+        for(let i=0; i<rooms.length; i++){
+            if(latitude>rooms[i]["latMin"] && longitude>rooms[i]["longMin"]){
+                if(latitude<rooms[i]["latMax"] && longitude< rooms[i]["longMax"]){
+                    this.setState({whichRoom:rooms[i]["name"]});
+                    console.log('you are in ' + this.state.whichRoom+"'s room");
+                }
+            }
+        }
+    }
         Geolocation.watchPosition((info => {
-            console.log(info.coords.latitude + " " + info.coords.longitude);
-            this.setState({latitude:info.coords.latitude, longitude:info.coords.longitude})}), 
+            //console.log(info.coords.latitude + " " + info.coords.longitude);
+            this.setState({latitude:info.coords.latitude.toFixed(5), longitude:info.coords.longitude.toFixed(5)});
+            //write you logic here
+            roomChecker(this.state.latitude, this.state.longitude);
+        }), 
             ((error)=>{
               console.log(error);
             }), options);
+            
+            
     }
+    
     static navigationOptions = { header: null };
     render() {
         return (
             <View style={styles.container}>
+            <Text>room owners name: {this.state.whichRoom}</Text>
                 <Image style={styles.logo} source={require('../images/logo.png')}/>
                 <View style={styles.locationBox}>
                     <View style={styles.locationBoxTitle}>

@@ -39,6 +39,7 @@ const RootStack = createStackNavigator(
       AddTask:AddTask,
       Home:Home,
       EditTask:EditTask,
+      //MapCheck:MapCheck
     },
     {
       initialRouteName: "Home"
