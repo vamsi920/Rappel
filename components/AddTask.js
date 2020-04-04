@@ -54,7 +54,7 @@ class AddTask extends Component {
         return (
             <View style={styles.container}>
             
-                <Text style={styles.heading}> Rapper </Text>
+                <Text style={styles.heading}> Rappel </Text>
                 <TextInput
                     label='Task Heading'
                     value={this.state.TaskHeading}

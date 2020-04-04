@@ -55,12 +55,12 @@ export class AddArea extends Component {
        
 
     onSubmit=async (RadiusOfArea, CentreLat, CentreLong)=>{
-        var deltaRadius = RadiusOfArea / 10000;
+        var deltaRadius = RadiusOfArea / 100000;
         var edgeCoords = {};
-        edgeCoords['latMin'] = CentreLat - deltaRadius;
-        edgeCoords['latMax'] = CentreLat + deltaRadius;
-        edgeCoords['longMin'] = CentreLong - deltaRadius;
-        edgeCoords['longMax'] = CentreLong + deltaRadius;
+        edgeCoords['latMin'] = CentreLat - deltaRadius -0.000005;
+        edgeCoords['latMax'] = CentreLat + deltaRadius + 0.000005;
+        edgeCoords['longMin'] = CentreLong - deltaRadius -0.000005;
+        edgeCoords['longMax'] = CentreLong + deltaRadius + 0.000005;
         this.state.EdgeCoords=edgeCoords;
        await firebase.database().ref(`Area/`).push(
             {

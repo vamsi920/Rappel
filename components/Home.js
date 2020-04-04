@@ -20,7 +20,7 @@ export class Home extends Component {
             taskLocationId: '',
         };
     }
-    async componentDidMount() {
+     componentDidMount() {
         firebase.database().ref('Area').on('value', (AreaList) => {
             areaList = [];
             roomList = [];
@@ -90,7 +90,7 @@ export class Home extends Component {
             <View style={styles.container}>
                 <View style={{ alignItems: 'center', justifyContent:'center', width:width(100),}}>
                     <Text>Current Location: {this.state.whichRoom}</Text>
-                    {(this.state.currentTask != null) ? (<Text style={{ justifyContent: 'center', }}>YOUR CURRENT TASK : {this.state.currentTask[0]['TaskHeading'] + "  "} 
+                    {(this.state.currentTask != null && this.state.currentTask!=[] && this.state.currentTask.length!=0) ? (<Text style={{ justifyContent: 'center', }}>YOUR CURRENT TASK : {this.state.currentTask[0]['TaskHeading'] + "  "} 
                         TASK DESCRIPTION : {this.state.currentTask[0]['TaskDescription']+ "  "} 
                          GIVEN BY : {this.state.currentTask[0]['GivenBy']} </Text>) : (<View />)}
                 </View>
