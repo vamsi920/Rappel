@@ -7,6 +7,8 @@ import TaskList from './components/TaskList.js';
 import AddTask from './components/AddTask.js';
 import Home from './components/Home.js';
 import EditTask from './components/EditTask.js';
+import CentreOfRoom from './components/CentreOfRoom.js';
+import AddArea from './components/AddArea.js';
 //import MapCheck from './components/MapCheck.js';
 export class App extends Component {
     componentWillMount(){
@@ -39,7 +41,9 @@ const RootStack = createStackNavigator(
       AddTask:AddTask,
       Home:Home,
       EditTask:EditTask,
-      //MapCheck:MapCheck
+      //MapCheck:MapCheck,
+      CentreOfRoom:CentreOfRoom,
+      AddArea:AddArea,
     },
     {
       initialRouteName: "Home"

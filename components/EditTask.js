@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput, Button,Drawer, List } from 'react-native-paper';
 import { height, width } from 'react-native-dimension';
 import firebase from 'firebase';
 export class EditTask extends Component {
@@ -11,10 +11,23 @@ export class EditTask extends Component {
             TaskDescription: '',
             GivenBy: '',
             Location: '',
+            AreaList:null,
+            LocationId:''
         }
     }
     componentWillMount() {
         console.log(this.props.navigation.state.params.id);
+    }
+    componentDidMount(){
+        firebase.database().ref('Area').on('value', (AreaList) => {
+           var AreaListArray=[];
+            AreaList.forEach(element=>{
+                AreaListArray.push(element.val());
+            })
+            
+            this.setState({AreaList:AreaListArray});
+            console.log(this.state.AreaList);
+          })
     }
     onSubmit=async (id)=>{
        await firebase.database().ref(`Task/${id}`).update({
@@ -48,12 +61,13 @@ export class EditTask extends Component {
                     style={styles.input}
                     onChangeText={GivenBy => this.setState({ GivenBy })}
                 />
-                <TextInput
-                    label='Location'
-                    value={this.state.Location}
-                    style={styles.input}
-                    onChangeText={Location => this.setState({ Location })}
-                />
+                <List.Section style={{width:width(80), }} title="choose Location">
+        <List.Accordion title="Location">
+          {(this.state.AreaList!=null)?(this.state.AreaList.map((arg)=>{
+            return(<List.Item title={arg.AreaName} onPress={()=>{this.setState({Location:arg.AreaName, LocationId:arg.id})}} />)
+          })):(<View></View>)}
+        </List.Accordion>
+      </List.Section>
                 <Button mode="contained" style={styles.addTask} onPress={() => this.onSubmit(this.props.navigation.state.params.id)}>
                     Edit Task
                  </Button>

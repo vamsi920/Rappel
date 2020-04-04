@@ -18,7 +18,6 @@ class TaskList extends Component {
     firebase.database().ref('Task').on('value', (TaskList) => {
       taskArray = [];
       TaskList.forEach(element => {
-        firebase.database().ref(`Task/${element.key}`).update({ id: element.key });
         taskArray.push(element.val());
       })
       this.setState({ TaskList: taskArray });

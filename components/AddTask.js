@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput, Button,Drawer, List } from 'react-native-paper';
 import { height, width } from 'react-native-dimension';
 import firebase from 'firebase';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -11,16 +11,31 @@ class AddTask extends Component {
             TaskHeading: '',
             TaskDescription: '',
             GivenBy: '',
-            Location: ''
+            Location: '',
+            active: 'first',
+            AreaList:null,
+            LocationId:''
         }
     }
-    onSubmit=()=>{
-         firebase.database().ref(`Task/`).push(
+    componentDidMount(){
+        firebase.database().ref('Area').on('value', (AreaList) => {
+           var AreaListArray=[];
+            AreaList.forEach(element=>{
+                AreaListArray.push(element.val());
+            })
+            
+            this.setState({AreaList:AreaListArray});
+            console.log(this.state.AreaList);
+          })
+    }
+    onSubmit=async ()=>{
+        await firebase.database().ref(`Task/`).push(
                {
                 TaskHeading: this.state.TaskHeading,
                 TaskDescription: this.state.TaskDescription,
                 GivenBy: this.state.GivenBy,
                 Location: this.state.Location,
+                LocationId: this.state.LocationId,
                 id:''
             }
            ).then(()=>{
@@ -28,12 +43,18 @@ class AddTask extends Component {
            }).catch((error)=>{
                console.log(error)
            })  
+           firebase.database().ref('Task').once('value', (AreaList) => {
+            AreaList.forEach(element => {
+              firebase.database().ref(`Task/${element.key}`).update({ id: element.key })
+            })
+          })
     }
     static navigationOptions = { header: null };
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.heading}> Rappel </Text>
+            
+                <Text style={styles.heading}> Rapper </Text>
                 <TextInput
                     label='Task Heading'
                     value={this.state.TaskHeading}
@@ -52,12 +73,13 @@ class AddTask extends Component {
                     style={styles.input}
                     onChangeText={GivenBy => this.setState({ GivenBy })}
                 />
-                <TextInput
-                    label='Location'
-                    value={this.state.Location}
-                    style={styles.input}
-                    onChangeText={Location => this.setState({ Location })}
-                />
+                <List.Section style={{width:width(80), }} title="choose Location">
+        <List.Accordion title="Location">
+          {(this.state.AreaList!=null)?(this.state.AreaList.map((arg)=>{
+            return(<List.Item title={arg.AreaName} onPress={()=>{this.setState({Location:arg.AreaName, LocationId:arg.id})}} />)
+          })):(<View></View>)}
+        </List.Accordion>
+      </List.Section>
                 <Button mode="contained" style={styles.addTask} onPress={() => this.onSubmit()}>
                     Add Task
                  </Button>
