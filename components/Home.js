@@ -63,18 +63,20 @@ export class Home extends Component {
                                     currentTask.push(tasks[j]);
                                 }
                             }
+                            
                             this.setState({ whichRoom: rooms[i]["name"], taskLocationId: taskLocationId, currentTask: currentTask });
                             console.log('you are in ' + this.state.whichRoom + "'s room with taskId: " + this.state.taskLocationId);
                             console.log(this.state.currentTask[0])
                         }
                     }
+                   
                 }
             }
 
         }
         Geolocation.watchPosition((info => {
             //console.log(info.coords.latitude + " " + info.coords.longitude);
-            this.setState({ latitude: info.coords.latitude.toFixed(5), preciseLat: info.coords.latitude, longitude: info.coords.longitude.toFixed(5), preciseLong: info.coords.longitude });
+            this.setState({ latitude: info.coords.latitude.toFixed(5), preciseLat: info.coords.latitude, longitude: info.coords.longitude.toFixed(5), preciseLong: info.coords.longitude, });
             //write you logic here
             console.log('%c current Coords:' + info.coords.latitude + " " + info.coords.longitude, 'background: #222; color: #bada55');
             roomChecker(this.state.preciseLat, this.state.preciseLong, this.state.roomList, this.state.AreaList, this.state.TaskList);
