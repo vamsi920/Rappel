@@ -4,6 +4,8 @@ import { height, width } from 'react-native-dimension';
 import MapView, { Marker, Circle } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import firebase from 'firebase';
+import { Avatar, Button, Card, Title, Paragraph} from 'react-native-paper';
+import { LocalNotification } from '../services/LocalPushController.js'
 export class Home extends Component {
     constructor(props) {
         super(props);
@@ -20,6 +22,7 @@ export class Home extends Component {
             taskLocationId: '',
         };
     }
+    
      componentDidMount() {
         firebase.database().ref('Area').on('value', (AreaList) => {
             areaList = [];
@@ -63,9 +66,11 @@ export class Home extends Component {
                                     currentTask.push(tasks[j]);
                                 }
                             }
-                            
+
                             this.setState({ whichRoom: rooms[i]["name"], taskLocationId: taskLocationId, currentTask: currentTask });
-                            console.log('you are in ' + this.state.whichRoom + "'s room with taskId: " + this.state.taskLocationId);
+                            //LocalNotification(this.state.whichRoom, "is your Location")
+                            LocalNotification( "Task Title: "+this.state.currentTask[0]["TaskHeading"],"Task details: "+ this.state.currentTask[0]["TaskDescription"] + " Given by:" + this.state.currentTask[0]["GivenBy"])
+                            console.log('you are in ' + this.state.whichRoom + " with taskId: " + this.state.taskLocationId);
                             console.log(this.state.currentTask[0])
                         }
                     }
@@ -90,18 +95,25 @@ export class Home extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={{ alignItems: 'center', justifyContent:'center', width:width(100),}}>
-                    <Text>Current Location: {this.state.whichRoom}</Text>
-                    {(this.state.currentTask != null && this.state.currentTask!=[] && this.state.currentTask.length!=0) ? (<Text style={{ justifyContent: 'center', }}>YOUR CURRENT TASK : {this.state.currentTask[0]['TaskHeading'] + "  "} 
-                        TASK DESCRIPTION : {this.state.currentTask[0]['TaskDescription']+ "  "} 
-                         GIVEN BY : {this.state.currentTask[0]['GivenBy']} </Text>) : (<View />)}
-                </View>
+                {/* <View style={{ alignItems: 'center', justifyContent:'center', width:width(100),}}>
+                    {(this.state.currentTask != null && this.state.currentTask!=[] && this.state.currentTask.length!=0) ? (
+                        <Card style={{width:width(80),height:height(13), backgroundColor:"#000"}}>
+                            <Card.Title title={"your current running task: "+this.state.currentTask[0]["TaskHeading"]} />
+                            <Card.Content>
+                            <Title>{"Given by: "+this.state.currentTask[0]["GivenBy"]}</Title>
+                            <Paragraph>{"Task Description: "+this.state.currentTask[0]["TaskDescription"]}</Paragraph>
+                            <Paragraph>{"Your current Location: "+this.state.whichRoom}</Paragraph>
+                            </Card.Content>
+                        </Card>
+                    ) : (<View />)}
+                </View> */}
 
                 <Image style={styles.logo} source={require('../images/logo.png')} />
                 <View style={styles.locationBox}>
                     <View style={styles.locationBoxTitle}>
                         <Text style={styles.locationBoxTextTitle}>Your Current Coordinates</Text>
                     </View>
+                    <View style={styles.locationBoxTitle}><Text>Location: {this.state.whichRoom}</Text></View>
                     <View style={styles.locationBoxCoord}>
                         <View style={styles.locationBoxCoordLeft}>
                             <Text>Lat: {this.state.latitude}</Text>
