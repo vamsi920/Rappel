@@ -69,7 +69,7 @@ export class Home extends Component {
 
                             this.setState({ whichRoom: rooms[i]["name"], taskLocationId: taskLocationId, currentTask: currentTask });
                             //LocalNotification(this.state.whichRoom, "is your Location")
-                            LocalNotification( "Task Title: "+this.state.currentTask[0]["TaskHeading"],"Task details: "+ this.state.currentTask[0]["TaskDescription"] + " Given by:" + this.state.currentTask[0]["GivenBy"])
+                           if(this.state.currentTask!=null && this.state.currentTask.length>0){ LocalNotification( "Task Title: "+this.state.currentTask[0]["TaskHeading"],"Task details: "+ this.state.currentTask[0]["TaskDescription"] + " Given by:" + this.state.currentTask[0]["GivenBy"])}
                             console.log('you are in ' + this.state.whichRoom + " with taskId: " + this.state.taskLocationId);
                             console.log(this.state.currentTask[0])
                         }

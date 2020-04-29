@@ -9,6 +9,8 @@ import Home from './components/Home.js';
 import EditTask from './components/EditTask.js';
 import CentreOfRoom from './components/CentreOfRoom.js';
 import AddArea from './components/AddArea.js';
+import Login from './components/Login.js';
+import Signup from './components/Signup.js';
 //import MapCheck from './components/MapCheck.js';
 export class App extends Component {
     componentWillMount(){
@@ -44,6 +46,8 @@ const RootStack = createStackNavigator(
       //MapCheck:MapCheck,
       CentreOfRoom:CentreOfRoom,
       AddArea:AddArea,
+      Login:Login,
+      Signup:Signup,
     },
     {
       initialRouteName: "Home"
