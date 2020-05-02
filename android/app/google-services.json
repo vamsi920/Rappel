@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "311426119745",
+    "firebase_url": "https://rappel-265905.firebaseio.com",
+    "project_id": "rappel-265905",
+    "storage_bucket": "rappel-265905.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311426119745:android:9c3bb579ec7ddab8696ec0",
+        "android_client_info": {
+          "package_name": "com.rappel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "311426119745-51m41qbne83j5k7ltbh4tdkipa5og477.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rappel",
+            "certificate_hash": "7ab47f9a0e78955eb1682a4ee433c4dbd96ec898"
+          }
+        },
+        {
+          "client_id": "311426119745-4ep8k5slojak0a038l7e7rb9f7tqs65j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMO13hWHR2UWeM7vZVAYxH0RRaZHN8Vpg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "311426119745-4ep8k5slojak0a038l7e7rb9f7tqs65j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

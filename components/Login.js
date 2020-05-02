@@ -26,7 +26,8 @@ export default class Login extends Component{
       nameOfUser:'',
       loading: false,
        Email: null,
-        Pass: null 
+        Pass: null ,
+        
 
     }
   }
@@ -36,7 +37,12 @@ export default class Login extends Component{
   .catch(error=>{console.log(error);
     if (error.code === 'auth/invalid-email') {
     console.log('That email address is invalid!');
-  }})
+    alert("email doesnot exist please signup");
+    this.props.navigation.navigate("Signup");
+    
+  }
+
+})
   
   }
   render() {

@@ -12,17 +12,26 @@ class TaskList extends Component {
       TaskHeading:'',
       TaskDescription: '',
       Location: '',
+      currentUser: '',
     }
   }
-  componentWillMount() {
-    firebase.database().ref('Task').on('value', (TaskList) => {
-      taskArray = [];
-      TaskList.forEach(element => {
-        taskArray.push(element.val());
-      })
-      this.setState({ TaskList: taskArray });
-      console.log(this.state.TaskList);
-    })
+   componentWillMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if(user)
+     { this.setState({currentUser:user.email}, ()=>{
+        firebase.database().ref('Task').on('value', (TaskList) => {
+          taskArray = [];
+          TaskList.forEach(element => {
+            //console.log("yeeee ",this.state.currentUser)
+            if(element.val()['GivenTo']==this.state.currentUser){
+            taskArray.push(element.val());}
+          })
+          this.setState({ TaskList: taskArray });
+          console.log(this.state.TaskList);
+        })
+      });}
+  })
+    
   }
   deleteTask = (id) => {
     firebase.database().ref(`Task/${id}`).remove();
@@ -49,7 +58,7 @@ class TaskList extends Component {
                 <Card.Title title={arg.TaskHeading} />
                 <Card.Content>
                   <Paragraph>Task Description : {arg.TaskDescription}</Paragraph>
-                  <Paragraph>Task Given By : {arg.GivenBy}</Paragraph>
+                  <Paragraph>Task Given By : {arg.CurrentUser}</Paragraph>
                   <Paragraph>Location : {arg.Location}</Paragraph>
                 </Card.Content>
                 <View style={{ flexDirection: 'row', alignItems: 'space-between' }}>

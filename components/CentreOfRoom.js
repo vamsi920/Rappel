@@ -7,6 +7,7 @@ export class CentreOfRoom extends Component {
         return (
             <View style={styles.container}>
             <View style={{width:'100%', padding:50}}>
+            <Text style={{fontSize:15, color:'#c1c1c1'}}> Due to restrictions and bad response of google place api we have to add our own loaction with this module</Text>
                 <Text style={{fontSize:20}}> Make sure you are at the Centre of the Area which you wanna add </Text></View>
                 <View style={{marginTop:100, width:'50%'}}>
                         <TouchableOpacity style={styles.button} onPress={() => {

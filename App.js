@@ -13,6 +13,12 @@ import Login from './components/Login.js';
 import Signup from './components/Signup.js';
 //import MapCheck from './components/MapCheck.js';
 export class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      loggedIn:false,
+    }
+  }
     componentWillMount(){
         var firebaseConfig = {
             apiKey: "AIzaSyDMO13hWHR2UWeM7vZVAYxH0RRaZHN8Vpg",
@@ -27,12 +33,22 @@ export class App extends Component {
           if (!firebase.apps.length) {
             		firebase.initializeApp(firebaseConfig)
                 }  
+                firebase.auth().onAuthStateChanged((user) => {
+                  
+                  if(user){
+                    this.setState({ loggedIn: true})
+                  } else {
+                    this.setState({loggedIn: false})
+                  }
+              });
+              
     }
+
     static navigationOptions = { header: null };
     render() {
         return (
             <View style={styles.container}>
-                <AppContainer/>
+                {(this.state.loggedIn==false)?(<LoginContainer/>):(<AppContainer/>)}
             </View>
         )
     }
@@ -46,14 +62,24 @@ const RootStack = createStackNavigator(
       //MapCheck:MapCheck,
       CentreOfRoom:CentreOfRoom,
       AddArea:AddArea,
-      Login:Login,
-      Signup:Signup,
+      // Login:Login,
+      // Signup:Signup,
     },
     {
       initialRouteName: "Home"
     }
   );
+  const LoginStack=createStackNavigator(
+    {
+      Login:Login,
+      Signup:Signup,
+    },
+    {
+      initialRouteName:"Login"
+    }
+  );
   const AppContainer = createAppContainer(RootStack);
+  const LoginContainer = createAppContainer(LoginStack);
 const styles = StyleSheet.create({
     container: {
       flex: 1,

@@ -20,6 +20,7 @@ export class Home extends Component {
             TaskList: null,
             currentTask: null,
             taskLocationId: '',
+            currentUser:''
         };
     }
     
@@ -39,21 +40,28 @@ export class Home extends Component {
             ///this.setState({ AreaList: areaList , roomList:roomList});
             console.log(this.state.roomList)
         });
-        firebase.database().ref('Task').on('value', (TaskList) => {
-            tastList = [];
-            let i = 0;
-            TaskList.forEach(element => {
-                tastList.push(element.val());
-                i++;
-            })
-            this.setState({ TaskList: tastList });
-            console.log(this.state.TaskList);
-        })
+        firebase.auth().onAuthStateChanged((user) => {
+            if(user)
+            {this.setState({currentUser:user.email}, ()=>{
+                firebase.database().ref('Task').on('value', (TaskList) => {
+                    tastList = [];
+                    let i = 0;
+                    TaskList.forEach(element => {
+                        if(element.val()['GivenTo']==this.state.currentUser){
+                        tastList.push(element.val());
+                        i++;
+                        }
+                    })
+                    this.setState({ TaskList: tastList });
+                    console.log(this.state.TaskList);
+                })
+            })}})
+       
         var options = {
             enableHighAccuracy: true,
             distanceFilter: 1,
         };
-
+       
         roomChecker = (latitude, longitude, rooms, area, tasks) => {
             if (this.state.roomList != null && this.state.AreaList!=null && this.state.TaskList!=null) { 
                 for (let i = 0; i < rooms.length; i++) {
@@ -69,9 +77,10 @@ export class Home extends Component {
 
                             this.setState({ whichRoom: rooms[i]["name"], taskLocationId: taskLocationId, currentTask: currentTask });
                             //LocalNotification(this.state.whichRoom, "is your Location")
-                           if(this.state.currentTask!=null && this.state.currentTask.length>0){ LocalNotification( "Task Title: "+this.state.currentTask[0]["TaskHeading"],"Task details: "+ this.state.currentTask[0]["TaskDescription"] + " Given by:" + this.state.currentTask[0]["GivenBy"])}
-                            console.log('you are in ' + this.state.whichRoom + " with taskId: " + this.state.taskLocationId);
-                            console.log(this.state.currentTask[0])
+                           if(this.state.currentTask!=null && this.state.currentTask.length>0){ LocalNotification( "Task Title: "+this.state.currentTask[0]["TaskHeading"],"Task details: "+ this.state.currentTask[0]["TaskDescription"] + " Given by:" + this.state.currentTask[0]["CurrentUser"]);
+                           console.log('you are in ' + this.state.whichRoom + " with taskId: " + this.state.taskLocationId);
+                           console.log(this.state.currentTask[0])}
+                            
                         }
                     }
                    
@@ -79,16 +88,20 @@ export class Home extends Component {
             }
 
         }
+       
         Geolocation.watchPosition((info => {
             //console.log(info.coords.latitude + " " + info.coords.longitude);
             this.setState({ latitude: info.coords.latitude.toFixed(5), preciseLat: info.coords.latitude, longitude: info.coords.longitude.toFixed(5), preciseLong: info.coords.longitude, });
             //write you logic here
-            console.log('%c current Coords:' + info.coords.latitude + " " + info.coords.longitude, 'background: #222; color: #bada55');
+           // console.log('%c current Coords:' + info.coords.latitude + " " + info.coords.longitude, 'background: #222; color: #bada55');
             roomChecker(this.state.preciseLat, this.state.preciseLong, this.state.roomList, this.state.AreaList, this.state.TaskList);
         }),
             ((error) => {
                 console.log(error);
             }), options);
+    }
+    handleLogOut=()=>{
+        firebase.auth().signOut();
     }
 
     static navigationOptions = { header: null };
@@ -107,7 +120,7 @@ export class Home extends Component {
                         </Card>
                     ) : (<View />)}
                 </View> */}
-
+                <View style={{width:width(100),marginLeft:width(90)}}><TouchableOpacity onPress={() =>{this.handleLogOut()}}><Text>Log out</Text></TouchableOpacity></View>
                 <Image style={styles.logo} source={require('../images/logo.png')} />
                 <View style={styles.locationBox}>
                     <View style={styles.locationBoxTitle}>
