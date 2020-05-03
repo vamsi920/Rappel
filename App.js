@@ -48,7 +48,11 @@ export class App extends Component {
     render() {
         return (
             <View style={styles.container}>
-                {(this.state.loggedIn==false)?(<LoginContainer/>):(<AppContainer/>)}
+                {//(this.state.loggedIn==false)?(<LoginContainer/>):(
+                }
+
+                <AppContainer/>
+                
             </View>
         )
     }

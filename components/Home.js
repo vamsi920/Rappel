@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, Image, TouchableOpacity, PermissionsAndroid  } from 'react-native'
 import { height, width } from 'react-native-dimension';
 import MapView, { Marker, Circle } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
@@ -24,7 +24,7 @@ export class Home extends Component {
         };
     }
     
-     componentDidMount() {
+    async componentDidMount() {
         firebase.database().ref('Area').on('value', (AreaList) => {
             areaList = [];
             roomList = [];
@@ -89,16 +89,35 @@ export class Home extends Component {
 
         }
        
-        Geolocation.watchPosition((info => {
-            //console.log(info.coords.latitude + " " + info.coords.longitude);
-            this.setState({ latitude: info.coords.latitude.toFixed(5), preciseLat: info.coords.latitude, longitude: info.coords.longitude.toFixed(5), preciseLong: info.coords.longitude, });
-            //write you logic here
-           // console.log('%c current Coords:' + info.coords.latitude + " " + info.coords.longitude, 'background: #222; color: #bada55');
-            roomChecker(this.state.preciseLat, this.state.preciseLong, this.state.roomList, this.state.AreaList, this.state.TaskList);
-        }),
-            ((error) => {
-                console.log(error);
-            }), options);
+        
+            try {
+                const granted = await PermissionsAndroid.request(
+                  PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                  {
+                    'title': 'Location Permission',
+                    'message': 'Location Permission' +
+                               'so you can use GPS location.'
+                  }
+                )
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                  console.log("You can use GPS");
+                  Geolocation.watchPosition((info => {
+                    //console.log(info.coords.latitude + " " + info.coords.longitude);
+                    this.setState({ latitude: info.coords.latitude.toFixed(5), preciseLat: info.coords.latitude, longitude: info.coords.longitude.toFixed(5), preciseLong: info.coords.longitude, });
+                    //write you logic here
+                   // console.log('%c current Coords:' + info.coords.latitude + " " + info.coords.longitude, 'background: #222; color: #bada55');
+                    roomChecker(this.state.preciseLat, this.state.preciseLong, this.state.roomList, this.state.AreaList, this.state.TaskList);
+                }),
+                    ((error) => {
+                        console.log(error);
+                    }), options);
+
+                } else {
+                  console.log("GPS location denied")
+                }
+              } catch (err) {
+                console.warn(err)
+              }
     }
     handleLogOut=()=>{
         firebase.auth().signOut();
