@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, ScrollView } from 'react-native'
 import { TextInput, Button, Drawer, List } from 'react-native-paper';
 import { height, width } from 'react-native-dimension';
 import firebase from 'firebase';
@@ -71,6 +71,7 @@ class AddTask extends Component {
     static navigationOptions = { header: null };
     render() {
         return (
+            <ScrollView style={{flex:1}}>
             <View style={styles.container}>
 
                 <Text style={styles.heading}> Rappel </Text>
@@ -92,8 +93,9 @@ class AddTask extends Component {
                     style={styles.input}
                     onChangeText={GivenBy => this.setState({ GivenBy })}
                 /> */}
-                <List.Section style={{ width: width(80), }} title="Assign Task To">
-                    <List.Accordion title="Select User or leave it blank to assign to yourself">
+                <List.Section style={{ width: width(80) }} title="Assign Task To">
+                    <List.Accordion title="Select User or leave it blank to assign to yourself" >
+                    
                         {(this.state.UsersList != null) ? (this.state.UsersList.map((arg) => {
                             return (<List.Item title={arg.name} onPress={() => { this.setState({ GivenTo:arg.email}) }} />)
                         })) : (<View></View>)}
@@ -110,6 +112,7 @@ class AddTask extends Component {
                     Add Task
                  </Button>
             </View>
+            </ScrollView>
         )
     }
 }
