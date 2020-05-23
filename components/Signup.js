@@ -85,7 +85,7 @@ handleSignup=  ()=>{
             <View style={styles.input}>
               <TextInput
                 style={styles.txt}
-                placeholder="Password should be more than 6 characters"
+                placeholder="should be more than 6 characters"
                 secureTextEntry={true} onChangeText={password=>this.setState({password})}>{this.state.password}</TextInput>
               
             </View>
