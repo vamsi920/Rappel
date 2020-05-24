@@ -12,7 +12,8 @@ export class EditTask extends Component {
             GivenBy: '',
             Location: '',
             AreaList:null,
-            LocationId:''
+            LocationId:'',
+            expanded:false
         }
     }
     componentWillMount() {
@@ -33,7 +34,7 @@ export class EditTask extends Component {
        await firebase.database().ref(`Task/${id}`).update({
                 TaskHeading: this.state.TaskHeading,
                 TaskDescription: this.state.TaskDescription,
-                GivenBy: this.state.GivenBy,
+                
                 Location: this.state.Location,
     });
     this.props.navigation.goBack();
@@ -54,17 +55,11 @@ export class EditTask extends Component {
                     value={this.state.TaskDescription}
                     style={styles.input}
                     onChangeText={TaskDescription => this.setState({ TaskDescription })}
-                />
-                <TextInput
-                    label='Given By'
-                    value={this.state.GivenBy}
-                    style={styles.input}
-                    onChangeText={GivenBy => this.setState({ GivenBy })}
-                />
+                /> 
                 <List.Section style={{width:width(80), }} title="choose Location">
-        <List.Accordion title="Location">
+        <List.Accordion title="Location" expanded={this.state.expanded} onPress={() =>this.setState({expanded:true})}>
           {(this.state.AreaList!=null)?(this.state.AreaList.map((arg)=>{
-            return(<List.Item title={arg.AreaName} onPress={()=>{this.setState({Location:arg.AreaName, LocationId:arg.id})}} />)
+            return(<List.Item title={arg.AreaName} onPress={()=>{this.setState({Location:arg.AreaName, LocationId:arg.id, expanded:false})}} />)
           })):(<View></View>)}
         </List.Accordion>
       </List.Section>

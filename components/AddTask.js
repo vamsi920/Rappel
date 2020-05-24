@@ -18,6 +18,8 @@ class AddTask extends Component {
             currentUser: '',
             UsersList: null,
             GivenTo:'',
+            expanded1:false,
+            expanded2:false
         }
     }
     componentDidMount() {
@@ -94,17 +96,17 @@ class AddTask extends Component {
                     onChangeText={GivenBy => this.setState({ GivenBy })}
                 /> */}
                 <List.Section style={{ width: width(80) }} title="Assign Task To">
-                    <List.Accordion title="Select User or leave it blank to assign to yourself" >
+                    <List.Accordion title="Select User or leave it blank to assign to yourself" expanded={this.state.expanded1} onPress={() =>this.setState({expanded1:true})}>
                     
                         {(this.state.UsersList != null) ? (this.state.UsersList.map((arg) => {
-                            return (<List.Item title={arg.name} onPress={() => { this.setState({ GivenTo:arg.email}) }} />)
+                            return (<List.Item title={arg.name}  onPress={() => { this.setState({ GivenTo:arg.email, expanded1:false})  }} />)
                         })) : (<View></View>)}
                     </List.Accordion>
                 </List.Section>
                 <List.Section style={{ width: width(80), }} title="choose Location">
-                    <List.Accordion title="Location">
+                    <List.Accordion title="Location" expanded={this.state.expanded2}  onPress={() =>this.setState({expanded2:true})}>
                         {(this.state.AreaList != null) ? (this.state.AreaList.map((arg) => {
-                            return (<List.Item title={arg.AreaName} onPress={() => { this.setState({ Location: arg.AreaName, LocationId: arg.id }) }} />)
+                            return (<List.Item title={arg.AreaName}  onPress={() => { this.setState({ Location: arg.AreaName, LocationId: arg.id , expanded2:false}) }} />)
                         })) : (<View></View>)}
                     </List.Accordion>
                 </List.Section>
