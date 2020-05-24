@@ -11,6 +11,7 @@ import CentreOfRoom from './components/CentreOfRoom.js';
 import AddArea from './components/AddArea.js';
 import Login from './components/Login.js';
 import Signup from './components/Signup.js';
+import {firebaseConfig} from "./config.js"
 //import MapCheck from './components/MapCheck.js';
 export class App extends Component {
   constructor(props) {
@@ -20,16 +21,7 @@ export class App extends Component {
     }
   }
     componentWillMount(){
-        var firebaseConfig = {
-            apiKey: "AIzaSyDMO13hWHR2UWeM7vZVAYxH0RRaZHN8Vpg",
-            authDomain: "rappel-265905.firebaseapp.com",
-            databaseURL: "https://rappel-265905.firebaseio.com",
-            projectId: "rappel-265905",
-            storageBucket: "rappel-265905.appspot.com",
-            messagingSenderId: "311426119745",
-            appId: "1:311426119745:web:a9b7cfe4e31a8b3d696ec0",
-            measurementId: "G-6JD4E37BW7"
-          };
+        
           if (!firebase.apps.length) {
             		firebase.initializeApp(firebaseConfig)
                 }  
