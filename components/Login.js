@@ -32,17 +32,19 @@ export default class Login extends Component{
     }
   }
   handleLogin=()=>{
-    firebase.auth().signInWithEmailAndPassword(this.state.inputUsername, this.state.inputPassword)
-  .then((res)=>{console.log(res); this.props.navigation.navigate("Home")})
-  .catch(error=>{console.log(error);
-    if (error.code === 'auth/invalid-email') {
-    console.log('That email address is invalid!');
-    alert("email doesnot exist please signup");
-    this.props.navigation.navigate("Signup");
+    let trimmedEmail = this.state.inputUsername.trim();
+    let smallCaseEmail = trimmedEmail.toLowerCase();
+    this.setState({inputUsername:smallCaseEmail},()=>{
+      firebase.auth().signInWithEmailAndPassword(this.state.inputUsername, this.state.inputPassword)
+      .then((res)=>{console.log(res); this.props.navigation.navigate("Home")})
+      .catch(error=>{alert(error);
+        if (error.code === 'auth/invalid-email') {
+        this.props.navigation.navigate("Signup");
+      }
     
-  }
-
-})
+    })
+    })
+    
   
   }
   render() {

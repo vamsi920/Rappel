@@ -47,16 +47,21 @@ export default class Signup extends Component{
     
 //   }
 handleSignup=  ()=>{
-   firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-  .then( (res)=>{
-    firebase.database().ref(`UsersList/`).push({
-      email:this.state.email, 
-      name:this.state.username,
-    }).catch(err=>console.log(err))
-    this.props.navigation.navigate("Login");alert("user created, please login again");console.log(res); 
-  
-})
-  .catch(error=>console.log(error))
+  let trimmedEmail = this.state.email.trim();
+  let smallCaseEmail = trimmedEmail.toLowerCase();
+  this.setState({email:smallCaseEmail},()=>{
+    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+    .then( (res)=>{
+      firebase.database().ref(`UsersList/`).push({
+        email:this.state.email, 
+        name:this.state.username,
+      }).catch(err=>console.log(err))
+      this.props.navigation.navigate("Login");alert("user created");console.log(res); 
+    
+  })
+    .catch(error=>console.log(error))
+  })
+   
 }
   static navigationOptions = { header: null };
   render() {
