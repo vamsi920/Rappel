@@ -1,6 +1,7 @@
 # Rappel
 a software which helps us to remember what to do at a particular place 
-
+1. You enter a task at particular location -> records the location of the task -> when you enter near the task location it gives an alarm
+2. you can assign task to others 
 
 setup react native environment using this procedure:
 
